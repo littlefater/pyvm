@@ -117,25 +117,29 @@ class VMControl:
         
         return False
 
-    def execute_process(self, program, arguments = None, mode = '-noWait'):
+    def execute_process(self, program, arguments = None, mode = '-noWait', show = False):
         '''Create process in Guest machine'''
         
         if arguments is not None:
             self.debug_print('Execute ' + program + ' in VM with arguments: ' + arguments)
-            
-            output = self.exec_command([self.vmrun_path, '-T', 'ws', '-gu', self.guest_user, '-gp', self.guest_pass, 'runProgramInGuest', self.vm_path, mode, program, arguments])
-            if mode == '-noWait' and output != '':
-                return False
-            elif mode != '-noWait' and -1 == output.find('exit code: 1'):
-                return False
+
+            if show:
+                output = self.exec_command([self.vmrun_path, '-T', 'ws', '-gu', self.guest_user, '-gp', self.guest_pass, 'runProgramInGuest', self.vm_path, mode, '-activeWindow', program, arguments])
+            else:
+                output = self.exec_command([self.vmrun_path, '-T', 'ws', '-gu', self.guest_user, '-gp', self.guest_pass, 'runProgramInGuest', self.vm_path, mode, program, arguments])
         else:
             self.debug_print('Execute ' + program + ' in VM.')
-            
-            output = self.exec_command([self.vmrun_path, '-T', 'ws', '-gu', self.guest_user, '-gp', self.guest_pass, 'runProgramInGuest', self.vm_path, mode, program])
-            if mode == '-noWait' and output != '':
-                return False
-            elif mode != '-noWait' and -1 == output.find('exit code: 1'):
-                return False
+
+            if show:
+                output = self.exec_command([self.vmrun_path, '-T', 'ws', '-gu', self.guest_user, '-gp', self.guest_pass, 'runProgramInGuest', self.vm_path, '-activeWindow', mode, program])
+            else:
+                output = self.exec_command([self.vmrun_path, '-T', 'ws', '-gu', self.guest_user, '-gp', self.guest_pass, 'runProgramInGuest', self.vm_path, mode, program])
+
+        if mode == '-noWait' and output != '':
+            return False
+
+        if mode != '-noWait' and -1 == output.find('exit code: 1'):
+            return False
             
         return True
 
