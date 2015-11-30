@@ -124,14 +124,14 @@ class VMControl:
             self.debug_print('Execute ' + program + ' in VM with arguments: ' + arguments)
 
             if show:
-                output = self.exec_command([self.vmrun_path, '-T', 'ws', '-gu', self.guest_user, '-gp', self.guest_pass, 'runProgramInGuest', self.vm_path, mode, '-activeWindow', program, arguments])
+                output = self.exec_command([self.vmrun_path, '-T', 'ws', '-gu', self.guest_user, '-gp', self.guest_pass, 'runProgramInGuest', self.vm_path, mode, '-activeWindow', '-interactive', program, arguments])
             else:
                 output = self.exec_command([self.vmrun_path, '-T', 'ws', '-gu', self.guest_user, '-gp', self.guest_pass, 'runProgramInGuest', self.vm_path, mode, program, arguments])
         else:
             self.debug_print('Execute ' + program + ' in VM.')
 
             if show:
-                output = self.exec_command([self.vmrun_path, '-T', 'ws', '-gu', self.guest_user, '-gp', self.guest_pass, 'runProgramInGuest', self.vm_path, '-activeWindow', mode, program])
+                output = self.exec_command([self.vmrun_path, '-T', 'ws', '-gu', self.guest_user, '-gp', self.guest_pass, 'runProgramInGuest', self.vm_path, '-activeWindow', '-interactive', mode, program])
             else:
                 output = self.exec_command([self.vmrun_path, '-T', 'ws', '-gu', self.guest_user, '-gp', self.guest_pass, 'runProgramInGuest', self.vm_path, mode, program])
 
